@@ -1,5 +1,7 @@
 const jwt =  require('jsonwebtoken');
 
+// Vérification du TOKEN de l'utilisateur
+// Sécuriser toutes les routes avec ce middleware
 module.exports = (req, res, next) =>{
     try{
         const token = req.headers.authorization.split(' ')[1];

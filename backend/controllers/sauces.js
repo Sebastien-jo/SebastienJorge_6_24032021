@@ -1,8 +1,10 @@
 const Sauce = require('../models/sauce');
 const fs = require('fs');
 
+// Création d'une nouvelle sauce
 exports.createSauce = (req, res, next)=>{
     const sauceObject = JSON.parse(req.body.sauce);
+    // supression de l'id de la sauce généré par le frontend
     delete req.body._id;
     const sauce = new Sauce({
         ...sauceObject,
@@ -12,11 +14,13 @@ exports.createSauce = (req, res, next)=>{
         usersLiked: [],
         usersDisliked: []
     });
+    // Sauvegarde de la sauce dans la base de données
     sauce.save()
         .then(()=> res.status(201).json({message: 'Sauce enregistrée !'}))
         .catch(error => res.status(400).json({error}));
 },
 
+// Modification d'une sauce
 exports.modifySauce = (req, res, next) =>{
     const sauceObject = req.file ?
     {
@@ -28,6 +32,7 @@ exports.modifySauce = (req, res, next) =>{
         .catch(error => res.status(400).json({error}));
 };
 
+// Suppression d'une sauce
 exports.deleteSauce = (req, res, next)=> {
     Sauce.findOne({ _id: req.params.id})
         .then(sauce => {
@@ -41,18 +46,22 @@ exports.deleteSauce = (req, res, next)=> {
         .catch(error => res.status(500).json({error}));
 };
 
+
+// Permet de récupérer une seule sauce, identifiée par son id
 exports.getOneSauce = (req, res, next) =>{
     Sauce.findOne({ _id: req.params.id})
         .then(sauce => res.status(200).json(sauce))
         .catch(error => res.satus(404).json({error}));
 };
 
+// Permet de récuperer toutes les sauces de la base MongoDB
 exports.getAllSauce = (req, res, next) =>{
     Sauce.find()
     .then(sauces => res.status(200).json(sauces))
     .catch(error => res.status(400).json({error}));
 };
 
+// permet le "like" ou le "dislike" d'une sauce
 exports.likeDislike = (req, res, next) => {
     let like = req.body.like
     let userId = req.body.userId
