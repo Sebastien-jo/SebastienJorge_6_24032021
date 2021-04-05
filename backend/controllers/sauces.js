@@ -73,7 +73,7 @@ exports.likeDislike = (req, res, next) => {
             $inc: {likes: +1},
         })
         .then(() => res.satus(200).json({message: 'Like ajouté !'}))
-        .catch((error)=> res.satus(4000).json({error}))
+        .catch((error)=> res.satus(400).json({error}))
     }
     if (like === -1){
         Sauce.updateOne ({
