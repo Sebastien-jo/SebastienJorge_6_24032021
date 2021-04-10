@@ -18,13 +18,14 @@ require('dotenv').config();
 
 
 // Connection à MongoDB
-mongoose.connect('mongodb+srv://seb_j:CarotteNavetPoireauxLapin@cluster0.ymnzh.mongodb.net/seb_j?retryWrites=true&w=majority',
-    { useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true})
-    .then(() => console.log('Connexion à Mongodb réussie !'))
-    .catch(() => console.log('Connexion à Mongodb échouée !'));
 
+mongoose.connect(process.env.DB_URI, {
+    useCreateIndex: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => console.log('Connexion à MongoDB réussie !'))
+  .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 
     const app = express();
@@ -37,6 +38,7 @@ app.use((req, res, next)=>{
   res.setHeader('Content-Security-Policy', "default-src 'self'");
   next();
 });
+
 
 
 // Middleware qui permet de parser les requêtes envoyées par le client, on peut y accéder grâce à req.body
